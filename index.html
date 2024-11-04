@@ -5,27 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Consulta</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        pre {
+            background: #f8f8f8;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            overflow-x: auto;
+        }
+    </style>
     <script src="https://www.google.com/recaptcha/api.js?render=6LdROnUqAAAAAHQ0Q2_nIJ7BLrVwhYvyXS6iGWbQ"></script>
     <script>
         async function consultar() {
             const tipoConsulta = document.getElementById('tipo_consulta').value;
             const valorConsulta = document.getElementById('valor_consulta').value;
-            const apitoken = 'Porra';  // Substitua pelo seu token de API
+            const apitoken = 'sua_chave_api_aqui';  // Substitua pela sua chave de API
 
             // Obter o token do reCAPTCHA
-            const token = await grecaptcha.execute('6LdROnUqAAAAAHQ0Q2_nIJ7BLrVwhYvyXS6iGWbQ', { action: 'consultar' });
-
-            const url = `https://pnsapis.online/api/busca/${tipoConsulta}?query=${valorConsulta}&apitoken=${apitoken}&g-recaptcha-response=${token}`;
-
             try {
+                const token = await grecaptcha.execute('6LdROnUqAAAAAHQ0Q2_nIJ7BLrVwhYvyXS6iGWbQ', { action: 'consultar' });
+                console.log("Token obtido:", token);  // Log do token
+
+                const url = `https://pnsapis.online/api/busca/${tipoConsulta}?query=${valorConsulta}&apitoken=${apitoken}&g-recaptcha-response=${token}`;
+                console.log("URL da API:", url);  // Log da URL
+
                 const apiResponse = await fetch(url);
                 if (!apiResponse.ok) {
-                    throw new Error('Erro na consulta');
+                    throw new Error('Erro na consulta: ' + apiResponse.status);
                 }
                 const resultado = await apiResponse.json();
+                console.log("Resultado da API:", resultado);  // Log do resultado
                 document.getElementById('resultado').textContent = JSON.stringify(resultado, null, 2);
             } catch (error) {
+                console.error("Erro:", error);  // Log do erro
                 document.getElementById('resultado').textContent = error.message;
             }
         }
