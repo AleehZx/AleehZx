@@ -3,10 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Site</title>
+    <title>Painel de Consulta</title>
 </head>
 <body>
-    <h1>Bem-vindo ao meu site!</h1>
-    <p>Este é um teste com GitHub Pages.</p>
+    <h1>Painel de Consulta</h1>
+    <form method="post" action="/consultar">
+        <label for="tipo_consulta">Tipo de Consulta:</label>
+        <select name="tipo_consulta" id="tipo_consulta" required>
+            <option value="nome">Nome</option>
+            <option value="cpf">CPF</option>
+            <option value="telefone">Telefone</option>
+            <!-- Adicione mais opções conforme necessário -->
+        </select>
+        
+        <label for="valor_consulta">Valor da Consulta:</label>
+        <input type="text" name="valor_consulta" id="valor_consulta" required>
+        
+        <button type="submit">Consultar</button>
+    </form>
+
+    {% if resultado %}
+        <h2>Resultado da Consulta:</h2>
+        <pre>{{ resultado | tojson(indent=2) }}</pre>
+    {% endif %}
 </body>
 </html>
