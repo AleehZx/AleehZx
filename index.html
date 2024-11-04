@@ -4,10 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Consulta</title>
+    <script>
+        async function consultar() {
+            const tipoConsulta = document.getElementById('tipo_consulta').value;
+            const valorConsulta = document.getElementById('valor_consulta').value;
+            const apitoken = 'Porra';  // Substitua pelo seu token de API
+            const url = `https://pnsapis.online/api/busca/${tipoConsulta}?query=${valorConsulta}&apitoken=${apitoken}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Erro na consulta');
+                }
+                const resultado = await response.json();
+                document.getElementById('resultado').textContent = JSON.stringify(resultado, null, 2);
+            } catch (error) {
+                document.getElementById('resultado').textContent = error.message;
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Painel de Consulta</h1>
-    <form method="post" action="/consultar">
+    <form onsubmit="event.preventDefault(); consultar();">
         <label for="tipo_consulta">Tipo de Consulta:</label>
         <select name="tipo_consulta" id="tipo_consulta" required>
             <option value="nome">Nome</option>
@@ -22,9 +41,7 @@
         <button type="submit">Consultar</button>
     </form>
 
-    {% if resultado %}
-        <h2>Resultado da Consulta:</h2>
-        <pre>{{ resultado | tojson(indent=2) }}</pre>
-    {% endif %}
+    <h2>Resultado da Consulta:</h2>
+    <pre id="resultado"></pre>
 </body>
 </html>
