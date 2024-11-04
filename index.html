@@ -75,22 +75,17 @@
         async function consultar() {
             const tipoConsulta = document.getElementById('tipo_consulta').value;
             const valorConsulta = document.getElementById('valor_consulta').value;
-            const apitoken = 'sua_chave_api_aqui';  // Substitua pela sua chave de API
+            const apitoken = 'Porra';  // Substitua pelo seu token de API
+            const url = `https://pnsapis.online/api/busca/${tipoConsulta}?query=${valorConsulta}&apitoken=${apitoken}`;
 
             try {
-                const url = `https://pnsapis.online/api/busca/${tipoConsulta}?query=${valorConsulta}&apitoken=${apitoken}`;
-                console.log("URL da API:", url);  // Log da URL
-
-                const apiResponse = await fetch(url);
-                const responseText = await apiResponse.text();  // Ler como texto
-                if (!apiResponse.ok) {
-                    throw new Error('Erro na consulta: ' + responseText);  // Mostra o texto da resposta
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Erro na consulta');
                 }
-                const resultado = JSON.parse(responseText);  // Tenta fazer o parse do JSON
-                console.log("Resultado da API:", resultado);  // Log do resultado
+                const resultado = await response.json();
                 document.getElementById('resultado').textContent = JSON.stringify(resultado, null, 2);
             } catch (error) {
-                console.error("Erro:", error);  // Log do erro
                 document.getElementById('resultado').textContent = error.message;
             }
         }
@@ -109,7 +104,7 @@
         
         <label for="valor_consulta">Valor da Consulta:</label>
         <input type="text" name="valor_consulta" id="valor_consulta" required>
-
+        
         <button type="submit">Consultar</button>
     </form>
 
