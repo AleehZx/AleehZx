@@ -73,12 +73,15 @@
     </style>
     <script src="https://www.google.com/recaptcha/api.js?render=6LdROnUqAAAAAHQ0Q2_nIJ7BLrVwhYvyXS6iGWbQ"></script>
     <script>
+        window.onload = function() {
+            window.grecaptcha.ready();
+        }
+
         async function consultar() {
             const tipoConsulta = document.getElementById('tipo_consulta').value;
             const valorConsulta = document.getElementById('valor_consulta').value;
             const apitoken = 'sua_chave_api_aqui';  // Substitua pela sua chave de API
 
-            // Obter o token do reCAPTCHA
             try {
                 const token = await grecaptcha.execute('6LdROnUqAAAAAHQ0Q2_nIJ7BLrVwhYvyXS6iGWbQ', { action: 'consultar' });
                 console.log("Token obtido:", token);  // Log do token
