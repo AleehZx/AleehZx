@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Consulta</title>
-    <script src="https://www.google.com/recaptcha/api.js?render=6LeiOXUqAAAAAISkZrkdQZ9n2Azq5befE60EQpiE"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LdROnUqAAAAAHQ0Q2_nIJ7BLrVwhYvyXS6iGWbQ"></script>
     <script>
         async function consultar() {
             const tipoConsulta = document.getElementById('tipo_consulta').value;
@@ -12,7 +12,7 @@
             const apitoken = 'Porra';  // Substitua pelo seu token de API
 
             // Obter o token do reCAPTCHA
-            const token = await grecaptcha.execute('6LeiOXUqAAAAAISkZrkdQZ9n2Azq5befE60EQpiE', { action: 'consultar' });
+            const token = await grecaptcha.execute('6LdROnUqAAAAAHQ0Q2_nIJ7BLrVwhYvyXS6iGWbQ', { action: 'consultar' });
 
             const url = `https://pnsapis.online/api/busca/${tipoConsulta}?query=${valorConsulta}&apitoken=${apitoken}&g-recaptcha-response=${token}`;
 
