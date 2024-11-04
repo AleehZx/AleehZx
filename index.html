@@ -84,7 +84,10 @@
                     throw new Error('Erro na consulta');
                 }
                 const resultado = await response.json();
-                document.getElementById('resultado').textContent = JSON.stringify(resultado, null, 2);
+
+                // Extraindo apenas o resultado
+                const resultadoFinal = resultado.resultado || "Resultado não disponível";
+                document.getElementById('resultado').textContent = resultadoFinal;
             } catch (error) {
                 document.getElementById('resultado').textContent = error.message;
             }
