@@ -1,31 +1,48 @@
-from flask import Flask, render_template, request
-import requests
+python
+from flask import Flask, render_template_string, request
 
 app = Flask(__name__)
 
-# Rota principal
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    resultado = None
+    if request.method == 'POST':
+        texto = request.form['texto']
+        opcao = request.form['opcao']
+        # Aqui você pode adicionar a lógica para a consulta
+        resultado = f'Você digitou: {texto} e escolheu: {opcao}'
 
-# Rota para processar a consulta
-@app.route('/consultar', methods=['POST'])
-def consultar():
-    tipo_consulta = request.form['tipo_consulta']
-    valor_consulta = request.form['valor_consulta']
-    apitoken = 'Porra'  # Substitua isso pelo seu token de API
+    html = '''
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Meu Site</title>
+    </head>
+    <body>
+        <h1>Consulta</h1>
+        <form method="POST">
+            <label for="texto">Digite algo:</label>
+            <input type="text" id="texto" name="texto" required>
+            <br>
+            <label for="opcao">Escolha uma opção:</label>
+            <select id="opcao" name="opcao">
+                <option value="opcao1">Opção 1</option>
+                <option value="opcao2">Opção 2</option>
+                <option value="opcao3">Opção 3</option>
+            </select>
+            <br>
+            <button type="submit">Consultar</button>
+        </form>
+        {% if resultado %}
+            <h2>{{ resultado }}</h2>
+        {% endif %}
+    </body>
+    </html>
+    '''
 
-    # Montar a URL da API
-    url = f"https://pnsapis.online/api/busca/{tipo_consulta}?query={valor_consulta}&apitoken={apitoken}"
-
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Levanta um erro para códigos de status 4xx ou 5xx
-        resultado = response.json()  # Obtém a resposta em formato JSON
-    except requests.exceptions.RequestException as e:
-        resultado = {"error": str(e)}
-    
-    return render_template('index.html', resultado=resultado)
+    return render_template_string(html, resultado=resultado)
 
 if __name__ == '__main__':
     app.run(debug=True)
